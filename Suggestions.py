@@ -2,7 +2,6 @@ from Comment import Comment
 
 
 class Suggestions:
-
     def __init__(self):
         self.suggestionList = []
 
@@ -31,14 +30,15 @@ class Suggestions:
     #             break
 
     def save(self):
-        fileString = ''
+        fileString = ""
         for comment in self.suggestionList:
             fileString += str(comment.size())
-            fileString += ',' + comment.commentString
+            fileString += "," + comment.commentString
+            fileString += "," + comment.videoStr
 
             for similar in comment.similarComments:
-                fileString += ',' + similar.commentString
-            fileString += '\n'
+                fileString += "," + similar.commentString
+            fileString += "\n"
 
         file = open("comments.csv", "w", encoding="utf-8")
         file.write(fileString)

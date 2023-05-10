@@ -2,10 +2,11 @@ import difflib
 
 
 class Comment:
-    def __init__(self, commentString: str) -> None:
+    def __init__(self, commentString: str, video: str) -> None:
         self.commentString = commentString.lower()
         self.request = None
         self.similarComments = []
+        self.videoStr = video
 
     def compare(self, otherComment):
         mergedMatch = ''

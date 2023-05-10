@@ -33,7 +33,9 @@ class Page:
         self.url = url
         options = self.hideMessages()
         self.driver = webdriver.Chrome(
-            "D:\Downloads\Software\chromedriver_win32\chromedriver.exe", options=options)
+            "D:\Downloads\Software\chromedriver_win32 - 1\chromedriver.exe",
+            options=options,
+        )
         self.load(url)
 
     def load(self, url):
@@ -43,13 +45,14 @@ class Page:
     def hideMessages(self):
         options = webdriver.ChromeOptions()
         # options.add_argument("--disable-web-security")
-        options.add_argument('--incognito')
-        options.add_argument('--disable-gpu')
+        options.add_argument("--incognito")
+        options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument(
-            "--user-data-dir=D:/Downloads/Software/chromedriver_win32/temp")
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+            "--user-data-dir=D:/Downloads/Software/chromedriver_win32/temp"
+        )
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
         return options
 
     def scrollPage(self):
@@ -57,14 +60,14 @@ class Page:
 
         while True:
             self.driver.execute_script(
-                "document.documentElement.scrollTo({top : document.body.scrollHeight, behavior: 'smooth'});")
+                "document.documentElement.scrollTo({top : document.body.scrollHeight, behavior: 'smooth'});"
+            )
 
             # Wait to load page
             # time.sleep(1)
 
             # Calculate new scroll height and compare with last scroll height
-            new_height = self.driver.execute_script(
-                "return document.body.scrollHeight")
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
 
             print("HEIGHT", new_height)
 
@@ -76,13 +79,13 @@ class Page:
         last_height = 0
 
         while True:
-            self.driver.find_element(By.CSS_SELECTOR, 'body').send_keys(
-                webdriver.Keys.CONTROL, webdriver.Keys.END)
+            self.driver.find_element(By.CSS_SELECTOR, "body").send_keys(
+                webdriver.Keys.CONTROL, webdriver.Keys.END
+            )
             # Wait to load page
             time.sleep(1)
 
-            new_height = self.driver.execute_script(
-                "return document.body.scrollHeight")
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
 
             print("HEIGHT", new_height)
 
@@ -95,14 +98,16 @@ class Page:
 
         while True:
             self.driver.execute_script(
-                "window.currentElement.scrollTo({top : window.currentElement.scrollHeight, behavior: 'smooth'});")
+                "window.currentElement.scrollTo({top : window.currentElement.scrollHeight, behavior: 'smooth'});"
+            )
 
             # Wait to load page
             time.sleep(1)
 
             # Calculate new scroll height and compare with last scroll height
             new_height = self.driver.execute_script(
-                "return window.currentElement.scrollHeight")
+                "return window.currentElement.scrollHeight"
+            )
 
             # print("HEIGHT", new_height)
 
@@ -113,32 +118,41 @@ class Page:
     def scrollComments(self):
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
         comments = soup.find_all(class_=isCommentClass)[0]
-        className = comments.get('class')[0]
+        className = comments.get("class")[0]
         # print(className)
         self.driver.execute_script(
-            "window.currentElement = document.getElementsByClassName('"+className+"')[0];")
+            "window.currentElement = document.getElementsByClassName('"
+            + className
+            + "')[0];"
+        )
         time.sleep(2)
         self.scrollEl()
 
     def scrollComments2(self):
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
+        time.sleep(1)
         comments = soup.find_all(class_=isCommentClass)[0]
-        className = comments.get('class')[0]
+        className = comments.get("class")[0]
         self.driver.execute_script(
-            "window.currentElement = document.getElementsByClassName('"+className+"')[0];")
+            "window.currentElement = document.getElementsByClassName('"
+            + className
+            + "')[0];"
+        )
 
         time.sleep(2)
 
         last_height = 0
 
         while True:
-            self.driver.find_element(By.CSS_SELECTOR, 'body').send_keys(
-                webdriver.Keys.CONTROL, webdriver.Keys.END)
+            self.driver.find_element(By.CSS_SELECTOR, "body").send_keys(
+                webdriver.Keys.CONTROL, webdriver.Keys.END
+            )
             # Wait to load page
             time.sleep(1)
 
             new_height = self.driver.execute_script(
-                "return window.currentElement.scrollHeight")
+                "return window.currentElement.scrollHeight"
+            )
 
             # print("HEIGHT", new_height)
 
@@ -153,25 +167,25 @@ class Page:
         return comments
 
     def commentsFromCommentDiv(self, commentDiv):
-        span = commentDiv.find_all('span')
+        span = commentDiv.find_all("span")
         if len(span) == 0:
-            return ''
+            return ""
 
         content = span[0].contents
 
         if len(content) == 0:
-            return ''
+            return ""
 
         return content[0]
 
     def urlFromVideo(self, video):
-        aTags = video.find_all('a')
+        aTags = video.find_all("a")
 
         if len(aTags) == 0:
-            return ''
+            return ""
 
-        href = aTags[0].get('href')
-        return href+"?is_copy_url=1&is_from_webapp=v1"
+        href = aTags[0].get("href")
+        return href + "?is_copy_url=1&is_from_webapp=v1"
 
     def getVideos(self):
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
